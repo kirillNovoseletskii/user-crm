@@ -14,7 +14,6 @@ const uuidv4 = () => {
       return v.toString(16);
     });
 }
-const subdivisions = ['Sub1', 'Sub2', 'Sub3', 'Sub4', 'Sub5']
 let data = []
 
 app.get('/', (req, res) => {
@@ -30,8 +29,6 @@ app.post('/edit', (req, res) =>{
     const indx = req.body.indx
     data[indx] = req.body.data
 })
-app.get('/subdivisions',(req, res) => {
-    res.send(JSON.stringify(subdivisions))
-})
+
 
 app.listen(PORT)

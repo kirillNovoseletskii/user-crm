@@ -57,6 +57,24 @@ export default {
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
     '@nuxtjs/pwa',
+    [
+      '@nuxtjs/firebase',
+      {
+        config: {
+          apiKey: "AIzaSyBzDy8Yw_e4eS8zkYNjGv7tWM7wT84cB8I",
+          authDomain: "ayaxtest-2e28c.firebaseapp.com",
+          databaseURL: "https://ayaxtest-2e28c.firebaseio.com",
+          projectId: "ayaxtest-2e28c",
+          storageBucket: "ayaxtest-2e28c.appspot.com",
+          messagingSenderId: "231786952355",
+          appId: "1:231786952355:web:5b397dcfaa72d9cffd7116",
+          measurementId: "G-48TR8PYYL4"
+        },
+        services: {
+          realtimeDb: true // this is the realtime database service
+        }
+      }
+    ]
   ],
   /*
   ** Axios module configuration

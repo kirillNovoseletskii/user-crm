@@ -12,13 +12,12 @@
         <tr @dblclick="editUserRoute(item.id)">
           <th>{{item.firstName}}</th>
           <th>{{item.lastName}}</th>
-          <th>{{item.subdivision}}</th>
+          <th>{{item.subdivision[0].name}}</th>
           <th>{{item.date.date}}/{{item.date.time}}</th>
           <th>{{item.id}}</th>
           <th>{{item.guid}}</th>
         </tr>
       </template>
-        
     </v-data-table>
   </div>
 </template>
@@ -40,13 +39,7 @@ export default {
     },
   },
   methods: {
-    ...mapActions(['SET_DATA', 'REMOVE_RIELT']),
-    delRielt(id, name, fam){
-      const yes = confirm(`Удалить риелтора ${name} ${fam}?`)
-      if(yes){
-        this.REMOVE_RIELT(id)
-      }
-    },
+    ...mapActions(['SET_DATA']),
     editUserRoute(id){
       this.$router.push(`table/${id}`)
     },

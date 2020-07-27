@@ -12,14 +12,18 @@ const uuidv4 = () => {
 const store = () => new Vuex.Store({
   state: {
     data: [],
-    subdivisions: []
+    subdivisions: [],
+    firstNames: [],
+    lastNames: [],
+    subs: []
   },
   actions:{
       async SET_DATA({commit}){
-        const data = await this.$axios.get('http://localhost:3001/')
-        commit('UPDATE_DATA', data.data)
-        const subdivisions = await this.$axios.get('http://localhost:3001/subdivisions')
-        commit('UPDATE_SUB', subdivisions.data)
+        const messageRef = this.$fireDb.ref('rieltors')
+        await this.$axios.get(messageRef.toString() + '.json').then(response => {
+          commit('UPDATE_DATA', Object.values(response.data))
+        })
+        
       },
       REMOVE_RIELT({commit}, id){
         commit('REMOVE_RIELT', id)
@@ -31,6 +35,12 @@ const store = () => new Vuex.Store({
       },
       editRieltor({commit}, data){
         commit('EDIT', data)
+      },
+      async updateNames({commit}){
+        const messageRef = this.$fireDb.ref('rieltors')
+        await this.$axios.get(messageRef.toString() + '.json').then(response => {
+          commit('UPDATE_NAMES', Object.values(response.data))
+        })
       }
   },
 
@@ -38,29 +48,35 @@ const store = () => new Vuex.Store({
     UPDATE_DATA(state, data){
         state.data = data
     },
-    UPDATE_SUB(state, subdivisions){
-      state.subdivisions = subdivisions
-    },
     async REMOVE_RIELT(state, id){ 
-      state.data = state.data.filter(r => r.id != id)
-      await this.$axios.post('http://localhost:3001/delete', {id})
+      state.data = state.data.filter(i => i.id != id)
+      await this.$fireDb.ref('rieltors').child(id).remove()
+    },
+    UPDATE_NAMES(state, data){
+      for (let i = 0; i < data.length; i++) {
+        state.firstNames.push(data[i].firstName)
+        state.lastNames.push(data[i].lastName)
+        state.subs.push(data[i].subdivision[0].name)
+      }
     },
     async ADD_RIELTOR(state, form){
-      await this.$axios.post('http://localhost:3001/', form)
+      let updates = {}
+      updates[form.id]=form
+      await this.$fireDb.ref('rieltors').update(updates)
     },
     async EDIT(state, data){
-      await this.$axios.post('http://localhost:3001/edit', {
-        indx: state.data.indexOf(data),
-        data: data
-      })
+      let updates = {}
+      updates[data.id]=data
+      await this.$fireDb.ref('rieltors').update(updates)
     }
   },
   getters: {
       data(state){
         return state.data
       },
-      subs(state){
-        return state.subdivisions
+      names(state){
+        const names = [state.firstNames, state.lastNames, state.subs]
+        return names
       }
   }
 })
