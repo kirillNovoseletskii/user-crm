@@ -15,7 +15,8 @@ const store = () => new Vuex.Store({
     subdivisions: [],
     firstNames: [],
     lastNames: [],
-    subs: []
+    subs: [],
+    search: []
   },
   actions:{
       async SET_DATA({commit}){
@@ -41,6 +42,9 @@ const store = () => new Vuex.Store({
         await this.$axios.get(messageRef.toString() + '.json').then(response => {
           commit('UPDATE_NAMES', Object.values(response.data))
         })
+      },
+      writeSearch({commit}, rieltor){
+        commit('UPDATE_SEARCH', rieltor)
       }
   },
 
@@ -58,6 +62,9 @@ const store = () => new Vuex.Store({
         state.lastNames.push(data[i].lastName)
         state.subs.push(data[i].subdivision[0].name)
       }
+    },
+    UPDATE_SEARCH(state, rieltor){
+      state.search = rieltor
     },
     async ADD_RIELTOR(state, form){
       let updates = {}
@@ -77,6 +84,9 @@ const store = () => new Vuex.Store({
       names(state){
         const names = [state.firstNames, state.lastNames, state.subs]
         return names
+      },
+      searchRes(state){
+        return state.search
       }
   }
 })
