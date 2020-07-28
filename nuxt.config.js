@@ -65,9 +65,9 @@ export default {
       '@nuxtjs/firebase',
       {
         config: {
-          apiKey: "AIzaSyBzDy8Yw_e4eS8zkYNjGv7tWM7wT84cB8I",
+          apiKey: process.env.API_KEY,
           authDomain: "ayaxtest-2e28c.firebaseapp.com",
-          databaseURL: "https://ayaxtest-2e28c.firebaseio.com",
+          databaseURL: process.env.API,
           projectId: "ayaxtest-2e28c",
           storageBucket: "ayaxtest-2e28c.appspot.com",
           messagingSenderId: "231786952355",
