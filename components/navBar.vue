@@ -1,13 +1,64 @@
 <template>
     <v-main>
-        <v-toolbar extended dense color="gray" class="accent">
-        <v-app-bar-nav-icon @click="vOn" class="d-flex d-md-none"></v-app-bar-nav-icon>
-        <v-navigation-drawer
+    <v-navigation-drawer
             v-model="show"
             absolute
-            right
             :permanent="false"
-        />
+            style="height: 1000%"
+        >
+            <v-row justify="center">
+                <v-list shaped>
+                <v-subheader>Навигация</v-subheader>
+                <v-list-item-group v-model="tabs">
+                    <v-list-item
+                    v-for="link in links"
+                    :key="link.to"
+                    @click="tabCl(link.to)"
+                    >
+                    <v-list-item-content>
+                        <v-list-item-title v-text="link.text"></v-list-item-title>
+                    </v-list-item-content>
+                    </v-list-item> 
+                </v-list-item-group>
+                <v-subheader>Поиск</v-subheader>
+                <v-list-item>
+                    <v-form >
+                    <v-autocomplete
+                        append-icon=''
+                        placeholder="Имя"
+                        :items="names[0]"
+                        v-model="rieltor.firstName"
+                        clearable
+                    />
+                    <v-autocomplete
+                        append-icon=''
+                        placeholder="Фамилия"
+                        :items="names[1]"
+                        v-model="rieltor.lastName"
+                        clearable
+                    />
+                    <v-autocomplete
+                        append-icon=''
+                        placeholder="Подразделение"
+                        :items="names[2]"
+                        v-model="rieltor.sub"
+                        clearable
+                    />
+                     <v-btn @click="search">
+                        <v-icon>mdi-card-search</v-icon>
+                    </v-btn>
+                    <v-btn @click="back">
+                        <v-icon>mdi-chevron-left-box</v-icon>
+                    </v-btn>
+                    </v-form>
+                </v-list-item>
+                </v-list>
+            </v-row>
+        
+        </v-navigation-drawer>
+        <v-toolbar extended dense color="gray" class="accent">
+        <v-app-bar-nav-icon @click="vOn" class="d-flex d-md-none"></v-app-bar-nav-icon>
+        
         <v-toolbar-title>Ayax Test Task</v-toolbar-title>
         <template v-slot:extension>
         <v-row class="d-none d-md-flex">
@@ -28,8 +79,10 @@
         </v-row>
         </template>
         <v-spacer></v-spacer>
-        <v-row class='mt-5' style="transform: translateX(30%)">
-            <v-col md='2'>
+        <v-form class="d-none d-md-flex">
+            
+            <v-row class='mt-5'>
+            <v-col md='2' sm='2' xs='2'>
             <v-autocomplete
                 append-icon=''
                 placeholder="Имя"
@@ -39,7 +92,7 @@
             />
             </v-col>
             
-            <v-col md='2'>
+            <v-col md='2' sm='2' xs='2'>
             <v-autocomplete
                 append-icon=''
                 placeholder="Фамилия"
@@ -49,7 +102,7 @@
             />
             </v-col>
 
-            <v-col md='2'>
+            <v-col md='2' sm='2' xs='2'>
             <v-autocomplete
                 append-icon=''
                 placeholder="Под-ние"
@@ -58,7 +111,7 @@
                 clearable
             />
             </v-col>
-            <v-col>
+            <v-col xs='2'>
                 <v-btn @click="search">
                     <v-icon>mdi-card-search</v-icon>
                 </v-btn>
@@ -67,6 +120,8 @@
                 </v-btn>
             </v-col>
         </v-row>
+
+        </v-form>
 
 
         </v-toolbar>
@@ -84,11 +139,11 @@ export default {
             width: 0,
             links: [
                 {
-                    text: 'Rieltors List',
+                    text: 'Список риелторов',
                     to: '/table'
                 },
                 {
-                    text: 'New rieltor',
+                    text: 'Новый риелтор',
                     to: '/new'
                 },
             ]

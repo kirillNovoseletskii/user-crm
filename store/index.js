@@ -1,7 +1,3 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
-Vue.use(Vuex)
-
 const uuidv4 = () => {
   return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
     var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
@@ -9,16 +5,15 @@ const uuidv4 = () => {
   });
 }
 
-const store = () => new Vuex.Store({
-  state: {
+export const state = () => ({
     data: [],
     subdivisions: [],
     firstNames: [],
     lastNames: [],
     subs: [],
     search: []
-  },
-  actions:{
+  })
+export const actions = {
       async SET_DATA({commit}){
         const messageRef = this.$fireDb.ref('rieltors')
         await this.$axios.get(messageRef.toString() + '.json').then(response => {
@@ -46,9 +41,9 @@ const store = () => new Vuex.Store({
       writeSearch({commit}, rieltor){
         commit('UPDATE_SEARCH', rieltor)
       }
-  },
+  }
 
-  mutations: {
+export const mutations = {
     UPDATE_DATA(state, data){
         state.data = data
     },
@@ -76,8 +71,8 @@ const store = () => new Vuex.Store({
       updates[data.id]=data
       await this.$fireDb.ref('rieltors').update(updates)
     }
-  },
-  getters: {
+  }
+export const  getters = {
       data(state){
         return state.data
       },
@@ -89,6 +84,3 @@ const store = () => new Vuex.Store({
         return state.search
       }
   }
-})
-
-export default store
