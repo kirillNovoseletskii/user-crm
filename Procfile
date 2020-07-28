@@ -1,1 +1,1 @@
-web: npm run dev
+web: rm -rf node_modules
