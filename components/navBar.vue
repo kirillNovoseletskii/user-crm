@@ -1,7 +1,7 @@
 <template>
     <v-main>
     <v-navigation-drawer
-            v-model="show"
+            v-model="showMobileNavigation"
             absolute
             :permanent="false"
             style="height: 1000%"
@@ -134,12 +134,12 @@
 </template>
 
 <script>
-import {mapActions, mapGetters} from 'vuex'
+import {mapActions, mapGetters} from 'vuex' // import for work with vuex    
 export default {
     data() {
         return {
-            rieltor: {},
-            show: false,
+            rieltor: {}, // template for rieltor    
+            showMobileNavigation: false,
             tabs: null,
             width: 0,
             links: [
@@ -156,30 +156,32 @@ export default {
     },
     methods: {
         ...mapActions(['SET_DATA', 'writeSearch']),
-        tabCl(to){
-            this.$router.push(to)
+        tabCl(toRoute){
+            this.$router.push(toRoute) // function for navigation
         },
-        search(){
-            const serchedRielt = this.data.filter(i => i.firstName==this.rieltor.firstName && i.lastName==this.rieltor.lastName && i.subdivision[0].name==this.rieltor.sub)
-            this.writeSearch(serchedRielt)
-            this.rieltor={}
-            this.$router.push('/table')
+        search(){ // search rieltor function 
+            const serchedRielt = this.data.filter(i => i.firstName==this.rieltor.firstName 
+                                                        && i.lastName==this.rieltor.lastName 
+                                                        && i.subdivision[0].name==this.rieltor.sub) // find rieltor
+            this.writeSearch(serchedRielt) // go to store and call function writeSearch
+            this.rieltor={} // clear text fields
+            this.$router.push('/table') // route to table page
         },
-        back(){
-            const serchedRielt = []
-            this.writeSearch(serchedRielt)
-            this.rieltor={}
-            this.$router.push('/table')
+        back(){ // function for back from search table to all rieltors
+            const serchedRielt = [] // create no data 
+            this.writeSearch(serchedRielt) // go to store and call function writeSearch with []
+            this.rieltor={} // clear text fields
+            this.$router.push('/table') // route to table page
         },
         vOn(){
-            this.show = !this.show
+            this.showMobileNavigation = !this.showMobileNavigation // change state when click on button
         }
     },
     computed: {
-        ...mapGetters(['names', 'data'])
+        ...mapGetters(['names', 'data']) // take data from store
     },
     async mounted() {
-        await this.SET_DATA()
+        await this.SET_DATA() // load data
     },
 }
 </script>

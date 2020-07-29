@@ -52,7 +52,7 @@ import {mapGetters, mapActions} from 'vuex'
 export default {
   computed: {
     ...mapGetters(['data', 'searchRes']),
-    headers(){
+    headers(){ // header's data for table 
       return [
         {text: 'Имя', value: 'firstName'},
         {text: 'Фамилия', value: 'lastName'},
@@ -70,7 +70,7 @@ export default {
     },
   },
   async mounted() {
-    await this.SET_DATA()
+    await this.SET_DATA() // loading all rieltors
   },
 }
 </script>

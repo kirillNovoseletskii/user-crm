@@ -79,9 +79,8 @@ import {mapActions, mapGetters} from 'vuex'
 export default {
     data() {
         return {
-            timeStep: '',
-            nameRules: [v => !!v || 'обязательное поле'],
-            search: '',
+            nameRules: [v => !!v || 'обязательное поле'], // rules for text fields
+            search: '', // variable for autocomplete
             loading: false,
             subs: [
                 {name: 'Sub1', id: Math.floor(Math.random()*10000), date:'2020-07-01/01:15'},
@@ -89,31 +88,31 @@ export default {
                 {name: 'Sub3', id: Math.floor(Math.random()*10000), date:'2020-01-15/02:36'},
                 {name: 'Sub4', id: Math.floor(Math.random()*10000), date:'2018-01-23/02:36'},
                 {name: 'Sub5', id: Math.floor(Math.random()*10000), date:'2019-06-17/15:48'}
-            ],
-            subNames: ['Sub1', 'Sub2', 'Sub3', 'Sub4', 'Sub5'],
+            ], // all subs
+            subNames: ['Sub1', 'Sub2', 'Sub3', 'Sub4', 'Sub5'], // sub's names
         }
     },
     methods: {
-        ...mapActions(['SET_DATA', 'editRieltor', 'REMOVE_RIELT']),
+        ...mapActions(['SET_DATA', 'editRieltor', 'REMOVE_RIELT']),// take functions from store
         edit(){
-            this.editRieltor(this.rieltor)
-            this.$router.push('/table')
-        },
-        rmRieltor(){
-            const yes = confirm('Вы точно хотите удалить этого риелтора?')
+            this.editRieltor(this.rieltor) // call store function
+            this.$router.push('/table') // back to table page
+        }, 
+        rmRieltor(){ // remove rieltor
+            const yes = confirm('Вы точно хотите удалить этого риелтора?') // asking 
             if (yes){
                 this.$router.push('/table')
-                this.REMOVE_RIELT(this.$route.params.id)
+                this.REMOVE_RIELT(this.$route.params.id) // call store function
             }
         }
     },
     computed: {
         ...mapGetters(['data']),
-        rieltor(){
+        rieltor(){ // find editing rieltor
             return this.data.filter(i => i.id === this.$route.params.id)[0]
         }
     },
-    async mounted() {
+    async mounted() { // loading data
         await this.SET_DATA()
     },
 }
