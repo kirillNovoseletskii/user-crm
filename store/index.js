@@ -18,6 +18,7 @@ export const actions = {
         const messageRef = this.$fireDb.ref('rieltors')
         await this.$axios.get(messageRef.toString() + '.json').then(response => {
           commit('UPDATE_DATA', Object.values(response.data))
+          commit('UPDATE_NAMES', Object.values(response.data))
         })
         
       },
@@ -32,12 +33,6 @@ export const actions = {
       editRieltor({commit}, data){
         commit('EDIT', data)
       },
-      async updateNames({commit}){
-        const messageRef = this.$fireDb.ref('rieltors')
-        await this.$axios.get(messageRef.toString() + '.json').then(response => {
-          commit('UPDATE_NAMES', Object.values(response.data))
-        })
-      },
       writeSearch({commit}, rieltor){
         commit('UPDATE_SEARCH', rieltor)
       }
@@ -48,6 +43,7 @@ export const mutations = {
         state.data = data
     },
     async REMOVE_RIELT(state, id){ 
+      state.search = []
       state.data = state.data.filter(i => i.id != id)
       await this.$fireDb.ref('rieltors').child(id).remove()
     },
@@ -62,6 +58,9 @@ export const mutations = {
       state.search = rieltor
     },
     async ADD_RIELTOR(state, form){
+      state.firstNames.push(form.firstName)
+      state.lastNames.push(form.lastName)
+      state.subs.push(form.subdivision[0].name)
       let updates = {}
       updates[form.id]=form
       await this.$fireDb.ref('rieltors').update(updates)

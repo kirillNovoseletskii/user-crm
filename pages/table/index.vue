@@ -1,37 +1,18 @@
 <template>
-  <div>
-  <h3 v-if="searchRes.length<1">Кол-во записей: {{data.length}}</h3>
-  <h3 v-else>Кол-во записей: {{searchRes.length}}</h3>
-    <v-data-table
-      v-if="searchRes.length<1"
-      :items="data"
-      :headers="headers"
-      hide-default-footer
-    >
-      <template 
-        v-slot:item="{item}" 
-      >
-        <tr @dblclick="editUserRoute(item.id)">
-          <th>{{item.firstName}}</th>
-          <th>{{item.lastName}}</th>
-          <th>{{item.subdivision[0].name}}</th>
-          <th>{{item.date.date}}/{{item.date.time}}</th>
-          <th>{{item.id}}</th>
-          <th>{{item.guid}}</th>
-        </tr>
-      </template>
-    </v-data-table>
+  <v-main class="main_table">
+  <h2 v-if="searchRes.length<1">Кол-во записей: {{data.length}}</h2>
+  <h2 v-else>Кол-во записей: {{searchRes.length}}</h2>
 
-    <v-data-table 
-      v-else
-      :items="searchRes"
-      :headers="headers"
-      hide-default-footer
-    >
-    <template 
-        v-slot:item="{item}" 
-      >
-        <tr @dblclick="editUserRoute(item.id)">
+  <v-simple-table v-if="searchRes.length<1" height="400px">
+    <template v-slot:default>
+      <thead>
+        <tr>
+          <th v-for="i in headers" :key="i.text">{{i.text}}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="item in data" :key="item.id"
+         @dblclick="editUserRoute(item.id)">
           <th>{{item.firstName}}</th>
           <th>{{item.lastName}}</th>
           <th>{{item.subdivision[0].name}}</th>
@@ -39,9 +20,31 @@
           <th>{{item.id}}</th>
           <th>{{item.guid}}</th>
         </tr>
-      </template>
-    </v-data-table>
-  </div>
+      </tbody>
+    </template>
+  </v-simple-table>
+
+     <v-simple-table v-else>
+    <template v-slot:default>
+      <thead>
+        <tr>
+          <th v-for="i in headers" :key="i.text">{{i.text}}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="item in searchRes" :key="item.id"
+         @dblclick="editUserRoute(item.id)">
+          <th>{{item.firstName}}</th>
+          <th>{{item.lastName}}</th>
+          <th>{{item.subdivision[0].name}}</th>
+          <th>{{item.date.date}}/{{item.date.time}}</th>
+          <th>{{item.id}}</th>
+          <th>{{item.guid}}</th>
+        </tr>
+      </tbody>
+    </template>
+  </v-simple-table>
+  </v-main>
 </template>
 
 <script>
@@ -66,8 +69,8 @@ export default {
       this.$router.push(`table/${id}`)
     },
   },
-  mounted() {
-    this.SET_DATA()
+  async mounted() {
+    await this.SET_DATA()
   },
 }
 </script>

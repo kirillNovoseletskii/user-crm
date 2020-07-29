@@ -56,7 +56,12 @@
             </v-row>
         
         </v-navigation-drawer>
-        <v-toolbar extended dense color="gray" class="accent">
+        <v-app-bar 
+            extended 
+            scroll
+            dense color="gray" 
+            class="accent"
+        >
         <v-app-bar-nav-icon @click="vOn" class="d-flex d-md-none"></v-app-bar-nav-icon>
         
         <v-toolbar-title>Ayax Test Task</v-toolbar-title>
@@ -124,7 +129,7 @@
         </v-form>
 
 
-        </v-toolbar>
+        </v-app-bar>
     </v-main>
 </template>
 
@@ -150,7 +155,7 @@ export default {
         }
     },
     methods: {
-        ...mapActions(['updateNames', 'writeSearch']),
+        ...mapActions(['SET_DATA', 'writeSearch']),
         tabCl(to){
             this.$router.push(to)
         },
@@ -174,7 +179,7 @@ export default {
         ...mapGetters(['names', 'data'])
     },
     async mounted() {
-        await this.updateNames()
+        await this.SET_DATA()
     },
 }
 </script>
