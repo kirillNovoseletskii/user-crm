@@ -19,14 +19,11 @@
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "firebase": "^7.17.1",
-    "nodemon": "^2.0.4",
     "nuxt": "^2.13.0",
-    "vue2-datepicker": "^1.4.1",
-    "vuejs-datepicker": "^1.6.2"
+    "@nuxtjs/vuetify": "^1.11.2",
+    "@mdi/font": "^5.3.45"
   },
   "devDependencies": {
-    "@mdi/font": "^5.3.45",
-    "@nuxt/typescript-build": "^1.0.3",
-    "@nuxtjs/vuetify": "^1.11.2"
+    "@nuxt/typescript-build": "^1.0.3"
   }
 }
