@@ -1,10 +1,10 @@
-const uuidv4 = () => {
+const uuidv4 = () => { // function for create GUID
   return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
     var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
     return v.toString(16);
   });
 }
-
+// all data vars
 export const state = () => ({
     data: [],
     subdivisions: [],
@@ -13,9 +13,10 @@ export const state = () => ({
     subs: [],
     search: []
   })
+
 export const actions = {
       async SET_DATA({commit}){
-        const messageRef = this.$fireDb.ref('rieltors')
+        const messageRef = this.$fireDb.ref('rieltors') // get url to database
         await this.$axios.get(messageRef.toString() + '.json').then(response => {
           commit('UPDATE_DATA', Object.values(response.data))
           commit('UPDATE_NAMES', Object.values(response.data))
@@ -44,10 +45,10 @@ export const mutations = {
     },
     async REMOVE_RIELT(state, id){ 
       state.search = []
-      state.data = state.data.filter(i => i.id != id)
-      await this.$fireDb.ref('rieltors').child(id).remove()
+      state.data = state.data.filter(i => i.id != id) // remove from store 
+      await this.$fireDb.ref('rieltors').child(id).remove() // reove from databse
     },
-    UPDATE_NAMES(state, data){
+    UPDATE_NAMES(state, data){ // load all names of rieltors without data
       for (let i = 0; i < data.length; i++) {
         state.firstNames.push(data[i].firstName)
         state.lastNames.push(data[i].lastName)
